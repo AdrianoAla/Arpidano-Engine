@@ -84,7 +84,10 @@ public:
 
     void update() override {
         PositionComponent *position = &entity->getComponent<PositionComponent>();
-        velocity.y += 0.1;
+
+        velocity.y /= 1.01;
+        velocity.x /= 1.01;
+
         position->setPos(position->x() + velocity.x, position->y() + velocity.y);
     }
 };
@@ -93,9 +96,15 @@ class PlayerComponent : public Component {
 public:
     void init() override {};
 
-    void jump() {
+    void jump(float x, float y) {
         PhysicsComponent *physics = &entity->getComponent<PhysicsComponent>();
-        physics->setVelocity(0, -5);
+        physics->setVelocity(x, y);
+    }
+
+    void accelerate(float x, float y) {
+        PhysicsComponent *physics = &entity->getComponent<PhysicsComponent>();
+        physics->velocity.x += x;
+        physics->velocity.y += y;
     }
 
 };
@@ -115,14 +124,20 @@ public:
     void init() override {};
 
     void update() override {
-        if (Game::event.type == SDL_KEYDOWN) {
-            switch (Game::event.key.keysym.sym) {
-                case SDLK_SPACE:
-                    entity->getComponent<PlayerComponent>().jump();
-                    break;
-                default:
-                    break;
-            }
+
+        const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+
+        if (currentKeyStates[SDL_SCANCODE_W]) {
+            entity->getComponent<PlayerComponent>().accelerate(0, -0.3);
+        }
+        if (currentKeyStates[SDL_SCANCODE_S]) {
+            entity->getComponent<PlayerComponent>().accelerate(0, 0.3);
+        }
+        if (currentKeyStates[SDL_SCANCODE_A]) {
+            entity->getComponent<PlayerComponent>().accelerate(-0.3, 0);
+        }
+        if (currentKeyStates[SDL_SCANCODE_D]) {
+            entity->getComponent<PlayerComponent>().accelerate(0.3, 0);
         }
     }
 };

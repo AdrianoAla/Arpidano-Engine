@@ -34,13 +34,13 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
             std::cout << "Renderer created!" << std::endl;
         }
 
-        isRunning = true;
-
         player.addComponent<PositionComponent>();
         player.addComponent<RectangleComponent>(50, 50);
         player.addComponent<PhysicsComponent>();
         player.addComponent<PlayerComponent>();
         player.addComponent<KeyboardController>();
+
+        isRunning = true;
 
     } else {
         isRunning = false;
@@ -71,7 +71,7 @@ void Game::update() {
 
     manager.update();
 
-    std::cout << player.getComponent<PositionComponent>().x() << " " << player.getComponent<PositionComponent>().y() << std::endl;
+    //std::cout << player.getComponent<PositionComponent>().x() << " " << player.getComponent<PositionComponent>().y() << std::endl;
 
     int x = player.getComponent<PositionComponent>().x_i();
     int y = player.getComponent<PositionComponent>().y_i();
