@@ -8,26 +8,32 @@
 #include "ECS.h"
 
 #include "../Game/Game.h"
+#include "../Utils/Vector2.h"
 
 class PositionComponent : public Component {
+private:
+    Vector2 position;
 public:
-    float xpos, ypos;
-public:
 
-    float x() const { return xpos; }
-    float y() const { return ypos; }
+    float x() const { return position.x; }
+    float y() const { return position.y; }
 
-    int x_i() const { return (int) xpos; }
-    int y_i() const { return (int) ypos; }
+    int x_i() const { return (int) position.x; }
+    int y_i() const { return (int) position.y; }
 
-    void init() override {
-        xpos = 0;
-        ypos = 0;
+    PositionComponent(float x, float y) {
+        position.x = x;
+        position.y = y;
+    }
+
+    PositionComponent() {
+        position.x = 0;
+        position.y = 0;
     }
 
     void setPos(float x, float y) {
-        this->xpos = x;
-        this->ypos = y;
+        this->position.x = x;
+        this->position.y = y;
     }
 };
 
@@ -67,18 +73,19 @@ public:
 
 class PhysicsComponent : public Component {
 public:
-    float velocity = 0;
+    Vector2 velocity;
 
     void init() override {};
 
-    void setVelocity(float v) {
-        velocity = v;
+    void setVelocity(float x, float y) {
+        velocity.x = x;
+        velocity.y = y;
     }
 
     void update() override {
         PositionComponent *position = &entity->getComponent<PositionComponent>();
-        velocity += 0.1;
-        position->setPos(position->x(), position->y() + velocity);
+        velocity.y += 0.1;
+        position->setPos(position->x() + velocity.x, position->y() + velocity.y);
     }
 };
 
@@ -88,7 +95,7 @@ public:
 
     void jump() {
         PhysicsComponent *physics = &entity->getComponent<PhysicsComponent>();
-        physics->setVelocity(-5);
+        physics->setVelocity(0, -5);
     }
 
 };
@@ -119,7 +126,5 @@ public:
         }
     }
 };
-
-class BirdComponent: public RectangleComponent, public PhysicsComponent, public PlayerComponent, public KeyboardController, public PositionComponent {};
 
 #endif //PROJECT_NAME_COMPONENTS_H

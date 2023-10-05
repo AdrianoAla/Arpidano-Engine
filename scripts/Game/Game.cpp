@@ -42,8 +42,6 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         player.addComponent<PlayerComponent>();
         player.addComponent<KeyboardController>();
 
-
-
     } else {
         isRunning = false;
     }

@@ -36,7 +36,7 @@ using ComponentArray = std::array<Component*, maxComponents>;
 
 class Component {
 public:
-    Entity* entity{};
+    Entity* entity;
 
     virtual void init() {}
     virtual void update() {}
@@ -71,7 +71,7 @@ public:
 
     template <typename T, typename... TArgs>
     T& addComponent(TArgs&&... mArgs) {
-        Component *c(new T(std::forward<TArgs>(mArgs)...));
+        T *c(new T(std::forward<TArgs>(mArgs)...));
         c->entity = this;
         std::unique_ptr<Component> uPtr{ c };
         components.emplace_back(std::move(uPtr));

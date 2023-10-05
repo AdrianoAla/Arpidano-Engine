@@ -10,6 +10,7 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/GameObject/GameObject.cpp
         scripts/ECS/ECS.cpp
         scripts/ECS/Components.h
+        scripts/Utils/Vector2.h
 
 )
 
