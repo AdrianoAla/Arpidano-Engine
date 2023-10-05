@@ -1,41 +1,38 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
+#include "Game/Game.h"
 
-int main(int argc, char* args []) {
-    SDL_Init(SDL_INIT_VIDEO);
+static const int width = 800;
+static const int height = 600;
 
-    SDL_Window* window = SDL_CreateWindow("Blank Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    if (window == nullptr) {
-        SDL_Log("Failed to create window: %s", SDL_GetError());
-        return 1;
-    }
+Game *game = nullptr;
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == nullptr) {
-        SDL_Log("Failed to create renderer: %s", SDL_GetError());
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
+int main() {
 
-    bool running = true;
-    SDL_Event event;
+    game = new Game();
 
-    while (running) {
-        // Close window with any input
-        while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT || event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
-                running = false;
-                break;
-            }
+    game->init("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false);
+
+    const int FPS = 60;
+    const int FPS_DELAY = 1000/FPS;
+
+    Uint32 frameStart;
+    int frameTime;
+
+    while (game->running()) {
+
+        frameStart = SDL_GetTicks();
+
+        game->handleEvents();
+        game->update();
+        game->render();
+
+        frameTime = SDL_GetTicks() - frameStart;
+
+        if (FPS_DELAY > frameTime) {
+            SDL_Delay(FPS_DELAY - frameTime);
         }
-
-        SDL_SetRenderDrawColor(renderer, 100, 100, 180, 255); // Set the background color to purple
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-    return 0;
+    game->clean();
+
 }
