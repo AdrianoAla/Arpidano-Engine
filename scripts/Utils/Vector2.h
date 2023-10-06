@@ -21,35 +21,35 @@ public:
     }
 
     Vector2 add(const Vector2& v) const {
-        return Vector2(x + v.x, y + v.y);
+        return {x + v.x, y + v.y};
     }
 
     Vector2 sub(const Vector2& v) const {
-        return Vector2(x - v.x, y - v.y);
+        return {x - v.x, y - v.y};
     }
 
     Vector2 mul(const Vector2& v) const {
-        return Vector2(x * v.x, y * v.y);
+        return {x * v.x, y * v.y};
     }
 
     Vector2 div(const Vector2& v) const {
-        return Vector2(x / v.x, y / v.y);
+        return {x / v.x, y / v.y};
     }
 
     Vector2 add_v(const float& v) const {
-        return Vector2(x + v, y + v);
+        return {x + v, y + v};
     }
 
     Vector2 sub_v(const float& v) const {
-        return Vector2(x - v, y - v);
+        return {x - v, y - v};
     }
 
     Vector2 mul_v(const float& v) const {
-        return Vector2(x * v, y * v);
+        return {x * v, y * v};
     }
 
     Vector2 div_v(const float& v) const {
-        return Vector2(x / v, y / v);
+        return {x / v, y / v};
     }
 
     float sum() const {
@@ -57,11 +57,11 @@ public:
     }
 
     Vector2 unit() const {
-        return Vector2(x / sum(), y / sum());
+        return {x / sum(), y / sum()};
     }
 
     Vector2 round() {
-        return Vector2((float)((int)(x)), (float)((int)(y)));
+        return {(float)((int)(x)), (float)((int)(y))};
     }
 };
 

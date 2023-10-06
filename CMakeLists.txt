@@ -6,11 +6,26 @@ set(CMAKE_CXX_STANDARD 11)
 # Must set the path to the main.cpp, for example: scripts/main.cpp if it is inside a folder
 
 add_executable(${PROJECT_NAME} scripts/main.cpp
+
         scripts/Game/Game.cpp
-        scripts/GameObject/GameObject.cpp
-        scripts/ECS/ECS.cpp
+
         scripts/ECS/Components.h
+
         scripts/Utils/Vector2.h
+
+        scripts/Collision/Collision.cpp
+        scripts/Collision/Collision.h
+
+        scripts/Components/ColliderComponent.h
+        scripts/Components/KeyboardControllerComponent.h
+        scripts/Components/TransformComponent.h
+
+        scripts/Camera/Camera.cpp
+        scripts/Camera/Camera.h
+        scripts/Components/RendererComponent.h
+        scripts/Components/BallControllerComponent.h
+        scripts/Components/AIControllerComponent.h
+
 
 )
 

@@ -3,15 +3,22 @@
 
 #include "SDL2/SDL.h"
 #include <list>
+#include "../Camera/Camera.h"
+
 
 class Game {
 public:
+
+    static double deltaTime;
 
     Game();
     ~Game();
 
     static SDL_Renderer *renderer;
+    static Camera *camera;
     static SDL_Event event;
+    static Manager world;
+
 
     void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
 

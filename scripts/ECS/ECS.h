@@ -19,12 +19,12 @@ class Entity;
 
 using ComponentID = std::size_t;
 
-inline ComponentID getComponentTypeID() {
+inline ComponentID getComponentTypeID() noexcept {
     static ComponentID lastID = 0;
     return lastID++;
 }
 
-template <typename T> inline ComponentID getComponentTypeID() {
+template <typename T> inline ComponentID getComponentTypeID() noexcept {
     static ComponentID typeID = getComponentTypeID();
     return typeID;
 }
@@ -50,8 +50,9 @@ private:
     bool active = true;
     std::vector<std::unique_ptr<Component>> components;
 
-    ComponentArray componentArray{};
-    ComponentBitSet componentBitSet;
+    ComponentArray componentArray ;
+    mutable ComponentBitSet componentBitSet;
+
 public:
     void update() {
         for (auto& c : components) c->update();
@@ -65,8 +66,8 @@ public:
 
     void destroy() { active = false; }
 
-    template <typename T> bool hasComponent() const {
-        return componentBitSet[getComponentTypeID<T>];
+    template <typename T> bool hasComponent() {
+        return componentBitSet[getComponentTypeID<T>()];
     }
 
     template <typename T, typename... TArgs>
@@ -114,5 +115,19 @@ public:
         std::unique_ptr<Entity> uPtr{ e };
         entities.emplace_back(std::move(uPtr));
         return *e;
+    }
+
+    std::vector<std::unique_ptr<Entity>> &getEntities() {
+        return entities;
+    }
+
+    template <typename T> std::vector<Entity*> getEntitiesByComponent() {
+        std::vector<Entity*> vec;
+        for (auto& e : entities) {
+            if (e->hasComponent<T>()) {
+                vec.emplace_back(e.get());
+            }
+        }
+        return vec;
     }
 };

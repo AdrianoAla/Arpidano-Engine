@@ -1,8 +1,8 @@
 #include <SDL2/SDL.h>
 #include "Game/Game.h"
 
-static const int width = 800;
-static const int height = 600;
+static const int width = 1000;
+static const int height = 800;
 
 Game *game = nullptr;
 
@@ -12,25 +12,30 @@ int main() {
 
     game->init("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, false);
 
-    const int FPS = 60;
+    const int FPS = 1;
     const int FPS_DELAY = 1000/FPS;
 
-    Uint32 frameStart;
+
+
+    Uint64 NOW = SDL_GetPerformanceCounter();
+    Uint64 LAST = 0;
+    double deltaTime = 0;
+
+
     int frameTime;
 
     while (game->running()) {
 
-        frameStart = SDL_GetTicks();
+        LAST = NOW;
 
-        game->handleEvents();
-        game->update();
         game->render();
+        game->update();
+        game->handleEvents();
 
-        frameTime = SDL_GetTicks() - frameStart;
+        NOW = SDL_GetPerformanceCounter();
 
-        if (FPS_DELAY > frameTime) {
-            SDL_Delay(FPS_DELAY - frameTime);
-        }
+        game->deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() / (double)(FPS_DELAY/1000) );
+
     }
 
     game->clean();
