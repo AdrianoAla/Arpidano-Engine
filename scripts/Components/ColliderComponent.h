@@ -42,7 +42,6 @@ public:
 
         if (transform->position.y + (float) height > 800) {
             transform->setPos(transform->position.x, (float)(800-height));
-            transform->velocity.y *= -1 ;
         }
     }
 };

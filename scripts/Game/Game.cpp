@@ -4,6 +4,7 @@
 #include "../ECS/Components.h"
 #include "../ECS/ECS.h"
 #include "../Collision/Collision.h"
+#include "../ECS/PhysicsSystem.h"
 
 //void DrawTriangle(SDL_Renderer* renderer, SDL_Point point1, SDL_Point point2, SDL_Point point3);
 
@@ -20,9 +21,11 @@ double Game::deltaTime = 0;
 Manager Game::world;
 
 Entity& gameArea = Game::world.addEntity();
+
 Entity& player = Game::world.addEntity();
-Entity& ai = Game::world.addEntity();
 Entity& ball = Game::world.addEntity();
+
+PhysicsSystem physicsSystem;
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
     int flags = 0;
@@ -51,7 +54,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
     if (isRunning) {
 
-        ball.addComponent<TransformComponent>(475,375,50,50);
+        ball.addComponent<TransformComponent>(475,375,50,50, 0.8, 1);
         ball.addComponent<ColliderComponent>("ball");
         ball.addComponent<BallControllerComponent>();
         ball.addComponent<RendererComponent>(255,255,255,255);
@@ -61,15 +64,12 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
         player.addComponent<KeyboardControllerComponent>();
         player.addComponent<RendererComponent>(255,255,255,255);
 
-        ai.addComponent<TransformComponent>(979,200,20,200);
-        ai.addComponent<ColliderComponent>("ai");
-        ai.addComponent<AIControllerComponent>(&ball);
-        ai.addComponent<RendererComponent>(255,255,255,255);
-
         gameArea.addComponent<TransformComponent>(0,0,1000,800);
         gameArea.addComponent<RendererComponent>(50,50,50,255);
 
         camera = new Camera();
+
+        physicsSystem = PhysicsSystem();
 
     }
 }
@@ -97,7 +97,9 @@ void Game::handleEvents() {
             }
 
             if (event.key.keysym.sym == SDLK_r) {
-                ball.getComponent<TransformComponent>().position = Vector2(475,375);
+                for (auto entity : Game::world.getEntitiesByComponent<TransformComponent>()) {
+                    entity->getComponent<TransformComponent>().reset();
+                }
             }
 
             if (event.key.keysym.sym == SDLK_p) {
@@ -113,6 +115,8 @@ void Game::handleEvents() {
 void Game::update() {
 
     if (!updating) {return;}
+
+    physicsSystem.update();
 
     Game::world.update();
     camera->update();

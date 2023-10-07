@@ -25,11 +25,6 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/Components/RendererComponent.h
         
         scripts/Components/BallControllerComponent.h
-        scripts/Components/AIControllerComponent.h
-
-        scripts/ECS/System.h
-
-
 )
 
 # --- SDL2 SETUP ---

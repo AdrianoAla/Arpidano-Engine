@@ -15,6 +15,5 @@
 #include "../Components/KeyboardControllerComponent.h"
 #include "../Components/RendererComponent.h"
 #include "../Components/BallControllerComponent.h"
-#include "../Components/AIControllerComponent.h"
 
 #endif //PROJECT_NAME_COMPONENTS_H
