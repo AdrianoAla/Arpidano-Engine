@@ -16,7 +16,7 @@ class Camera {
         float speed = 2.5;
         Vector2 position;
         Entity *target;
-        bool movable;
+        bool movable = true;
 
         Camera();
 

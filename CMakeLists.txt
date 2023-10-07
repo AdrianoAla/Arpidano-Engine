@@ -23,8 +23,11 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/Camera/Camera.cpp
         scripts/Camera/Camera.h
         scripts/Components/RendererComponent.h
+        
         scripts/Components/BallControllerComponent.h
         scripts/Components/AIControllerComponent.h
+
+        scripts/ECS/System.h
 
 
 )

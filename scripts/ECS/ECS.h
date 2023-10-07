@@ -14,6 +14,7 @@
 #include <bitset>
 #include <array>
 
+
 class Component;
 class Entity;
 
@@ -131,3 +132,4 @@ public:
         return vec;
     }
 };
+

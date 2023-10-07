@@ -12,6 +12,7 @@
 class TransformComponent : public Component {
 public:
     Vector2 position;
+    Vector2 originalPosition;
     Vector2 velocity;
     int width, height;
 
@@ -20,9 +21,12 @@ public:
     int x_i() const { return (int) position.x; }
     int y_i() const { return (int) position.y; }
 
+
+
     TransformComponent(float x, float y) {
         position.x = x;
         position.y = y;
+        originalPosition = Vector2(x,y);
         velocity.x = 0;
         velocity.y = 0;
         width = 0;
@@ -32,6 +36,7 @@ public:
     TransformComponent(float x, float y, int w, int h) {
         position.x = x;
         position.y = y;
+        originalPosition = Vector2(x,y);
         velocity.x = 0;
         velocity.y = 0;
         width = w;
@@ -41,10 +46,15 @@ public:
     TransformComponent() {
         position.x = 0;
         position.y = 0;
+        originalPosition = Vector2(0,0);
         velocity.x = 0;
         velocity.y = 0;
         width = 0;
         height = 0;
+    }
+
+    void resetPosition() {
+        position = originalPosition;
     }
 
     void setPos(float x, float y) {

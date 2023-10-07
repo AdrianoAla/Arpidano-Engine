@@ -38,7 +38,9 @@ public:
             if (transformComponent->position.x + transformComponent->width/2 < 0) {
 
                 // Player lost
-                transformComponent->position = Vector2(475, 375);
+                for (Entity *e : Game::world.getEntitiesByComponent<TransformComponent>()) {
+                    e->getComponent<TransformComponent>().resetPosition();
+                }
                 transformComponent->velocity = Vector2(1,1);
 
             }
