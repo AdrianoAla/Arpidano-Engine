@@ -19,11 +19,17 @@ public:
 
         const Uint8* currentKeyStates = SDL_GetKeyboardState( nullptr );
 
+        float speed_mul = 1;
+
+        if (currentKeyStates[SDL_SCANCODE_LSHIFT]) {
+            speed_mul = 2;
+        }
+
         if (currentKeyStates[SDL_SCANCODE_W]) {
-            entity->getComponent<TransformComponent>().move(0, -speed);
+            entity->getComponent<TransformComponent>().move(0, -speed * speed_mul);
         }
         else if (currentKeyStates[SDL_SCANCODE_S]) {
-            entity->getComponent<TransformComponent>().move(0, speed);
+            entity->getComponent<TransformComponent>().move(0, speed * speed_mul);
         }
 
     }
